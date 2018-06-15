@@ -2,9 +2,10 @@ var express = require("express");
 var app = require("express")();
 var http = require('http').Server(app);
 var io = require("socket.io")(http);
+var message = require('./BusinessLogic/message');
 
 app.get('/',(req,res)=>{
-    res.sendFile("C:/NodePubSub/ChatApp/index.html",{"Content-Type": "text/html"});
+    res.sendFile(__dirname+"/index.html",{"Content-Type": "text/html"});
 });
 
 http.listen(3030,()=>{
@@ -21,8 +22,9 @@ io.on('connection',(socket)=>
     socket.on('chat message',(mesg)=>
     {
         console.log(socket.rooms);
+        message.post(mesg);
         io.emit("chat message",mesg);
-        socket.broadcast.emit(mesg);
+        // socket.broadcast.emit(mesg);
     });
     socket.on('button Event',(mesg)=>{
         socket.to('hello').emit('chat message','this is a system generated message');

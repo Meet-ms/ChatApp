@@ -3,6 +3,8 @@
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" type="text/javascript"></script>
     <script src="node_modules/socket.io-client/dist/socket.io.js" type="text/javascript"></script>
+    <!-- Adding dummy userContext  -->
+    <script src="http://localhost/MtStorage/smartcontent/tests/mockUserInfo.js" type="text/javascript"></script>
     <script src="lib/js/config.js" type="text/javascript"></script>
     <script src="lib/js/util.js" type="text/javascript"></script>
     <script src="lib/js/jquery.emojiarea.js" type="text/javascript"></script>
@@ -15,13 +17,17 @@
         $(function () {
             var socket = io();
             $('#send').click(function(){
-              socket.emit('chat message', $('#m').val());
+              var mesgObj = {
+                userID : userInfo.UserBasicDetails.UserId,
+                message : $('#m').val()
+              };
+              socket.emit('chat message', mesgObj);
               $('#m').val('');
               $('div[data-type="input"]').text('');
               return false;
             });
             socket.on('chat message', function(msg){
-              $('#messages').append($('<li>').text(msg));
+              $('#messages').append($('<li>').text(msg.message));
                 twemoji.parse(document.body)
             });
             $('#button').on('click',function (event) {
