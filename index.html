@@ -17,6 +17,7 @@
         $(function () {
             var socket = io();
             $('#send').click(function(){
+              $('#messages').append($('<li>').text($('#m').val()));
               var mesgObj = {
                 userID : userInfo.UserBasicDetails.UserId,
                 message : $('#m').val()
@@ -60,7 +61,7 @@
       div[data-type="menu"] {z-index: 5001; margin-right: 37%; width: 31%; margin-top: -20%; overflow-x: hidden;}
     </style>
   </head>
-  <body class="content">
+  <body class="content" onkeypress="someEvent(event)">
     <!-- <button id="button">
         Hey Button
     </button> -->
@@ -69,7 +70,7 @@
     </div>
     
     <!-- <form class="mx-auto" action=""> -->
-      <input type="text" class="form-control" maxlength="20" id="m" autocomplete="off" data-emojiable="true" />
+      <input type="text" class="form-control" id="m" autocomplete="off" data-emojiable="true" />
       <button class="btn" id="send" style="position: relative;">Send</button>
     <!-- </form> -->
   </body>

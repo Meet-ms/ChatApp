@@ -8,27 +8,31 @@ app.get('/',(req,res)=>{
     res.sendFile(__dirname+"/index.html",{"Content-Type": "text/html"});
 });
 
-http.listen(3030,()=>{
-    console.log("Host is active on 3030");
+http.listen(3031,()=>{
+    console.log("Host is active on 3031");
+    // message.sendEmail({});
 });
 
 app.use(express.static(__dirname));
 
 io.on('connection',(socket)=>
 {
-    socket.join('hello');
-    console.log(socket.rooms);
+    // socket.join('hello');
+    // console.log(socket.rooms);
     console.log('a user is connected');
     socket.on('chat message',(mesg)=>
     {
-        console.log(socket.rooms);
+        console.log('\n');
+        console.log('Current users are :%o',io.rooms);
+        // console.log('\n');
         message.post(mesg);
-        io.emit("chat message",mesg);
+        socket.broadcast.emit("chat message",mesg);        
         // socket.broadcast.emit(mesg);
     });
-    socket.on('button Event',(mesg)=>{
-        socket.to('hello').emit('chat message','this is a system generated message');
+    socket.on('raiseTicket',(mesg)=>{
+        // socket.to('hello').emit('chat message','this is a system generated message');
+        message.sendEmail(mesg);
     });
-    io.to('hello').emit('chat message','Welcome');
+    // io.to('hello').emit('chat message','Welcome');
     //commit this new comment
 })
